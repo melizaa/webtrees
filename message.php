@@ -21,6 +21,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
 
+use WT\Assets;
 use WT\Auth;
 use WT\Log;
 use WT\User;
@@ -49,7 +50,7 @@ $to_user = User::findByIdentifier($to);
 if (!$to_user || ($to=='all' || $to=='last_6mo' || $to=='never_logged') && !Auth::isAdmin()) {
 	// TODO, what if we have a user called "all" or "last_6mo" or "never_logged" ???
 	$controller->pageHeader();
-	$controller->addInlineJavascript('window.opener.location.reload(); window.close();');
+	Assets::addInlineJs('window.opener.location.reload(); window.close();');
 	exit;
 }
 
@@ -98,8 +99,8 @@ case 'send':
 switch ($action) {
 case 'compose':
 	$controller
-		->pageHeader()
-		->addInlineJavascript('
+		->pageHeader();
+	Assets::addInlineJs('
 		function checkForm(frm) {
 			if (frm.subject.value=="") {
 				alert("'.WT_I18N::translate('Please enter a message subject.').'");
@@ -208,7 +209,7 @@ case 'send':
 		$i++;
 	}
 	$controller
-		->pageHeader()
-		->addInlineJavascript('window.opener.location.reload(); window.close();');
+		->pageHeader();
+	Assets::addInlineJs('window.opener.location.reload(); window.close();');
 	break;
 }
